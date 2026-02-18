@@ -1,0 +1,22 @@
+{
+  "name": "mern",
+  "version": "1.0.0",
+  "description": "Full-stack ThinkBoard built with MongoDB, Express, React, and Node.js featuring CRUD notes, REST API, rate limiting, toast notifications, and responsive UI.",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm install --prefix backend && npm install --prefix frontend && npm run build --prefix frontend",
+    "start": "npm run start --prefix backend"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kavya0224/ThinkBoard-USING-MERN.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Kavya0224/ThinkBoard-USING-MERN/issues"
+  },
+  "homepage": "https://github.com/Kavya0224/ThinkBoard-USING-MERN#readme"
+}

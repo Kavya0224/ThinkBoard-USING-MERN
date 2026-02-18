@@ -3,8 +3,6 @@ import cors from "cors";
 import dotenv from "dotenv";
 import path from "path";
 
-
-
 import notesRoutes from "./routes/notesRoutes.js";
 import { connectDB } from "./config/db.js";
 import rateLimiter from "./middleware/rateLimiter.js";
@@ -15,7 +13,10 @@ const app = express();
 const PORT = process.env.PORT || 5001;
 const __dirname = path.resolve();
 
-// middleware
+// =====================
+// Middleware
+// =====================
+
 if (process.env.NODE_ENV !== "production") {
   app.use(
     cors({
@@ -23,24 +24,35 @@ if (process.env.NODE_ENV !== "production") {
     })
   );
 }
-app.use(express.json()); // this middleware will parse JSON bodies: req.body
+
+app.use(express.json());
 app.use(rateLimiter);
 
-// our simple custom middleware
-// app.use((req, res, next) => {
-//   console.log(`Req method is ${req.method} & Req URL is ${req.url}`);
-//   next();
-// });
+// =====================
+// Routes
+// =====================
 
 app.use("/api/notes", notesRoutes);
 
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "../frontend/dist")));
+// =====================
+// Production Setup (SPA Safe)
+// =====================
 
-  app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "../frontend", "dist", "index.html"));
+if (process.env.NODE_ENV === "production") {
+  const distPath = path.join(__dirname, "../frontend/dist");
+
+  // Serve static frontend files
+  app.use(express.static(distPath));
+
+  // SPA fallback (Express 5 compatible)
+  app.use((req, res) => {
+    res.sendFile(path.join(distPath, "index.html"));
   });
 }
+
+// =====================
+// Start Server
+// =====================
 
 connectDB().then(() => {
   app.listen(PORT, () => {
